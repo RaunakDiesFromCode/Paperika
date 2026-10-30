@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "Paperika",
         "width": 1280,
         "height": 840,
@@ -48,8 +49,5 @@
       "entitlements": null
     }
   },
-  "plugins": {
-    "dialog": {},
-    "fs": {}
-  }
+  "plugins": {}
 }
