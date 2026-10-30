@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { useDocumentStore } from "@/stores/useDocumentStore";
+import { useSelectionStore } from "@/stores/useSelectionStore";
 import {
   useViewerSettingsStore,
   CameraPreset,
@@ -38,6 +39,8 @@ export const Viewer3D: React.FC = () => {
   } = useViewerSettingsStore();
 
   const orbitControlsRef = useRef<any>(null);
+  const pointerDownPos = useRef({ x: 0, y: 0 });
+  const { clearSelection } = useSelectionStore();
 
   if (!currentDocument) {
     return (
@@ -74,6 +77,17 @@ export const Viewer3D: React.FC = () => {
       <Canvas
         shadows
         gl={{ antialias: true, alpha: false, preserveDrawingBuffer: true }}
+        onPointerDown={(e) => {
+          pointerDownPos.current = { x: e.clientX, y: e.clientY };
+        }}
+        onPointerMissed={(e) => {
+          // Deselect if it was a stationary click/tap outside any 3D object
+          const dx = Math.abs(e.clientX - pointerDownPos.current.x);
+          const dy = Math.abs(e.clientY - pointerDownPos.current.y);
+          if (dx < 6 && dy < 6) {
+            clearSelection();
+          }
+        }}
         camera={{
           position: [center.x + maxDim * 1.5, center.y + maxDim, center.z + maxDim * 1.8],
           fov: 45,

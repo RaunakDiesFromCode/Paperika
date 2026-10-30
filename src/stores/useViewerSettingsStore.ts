@@ -40,6 +40,8 @@ interface ViewerSettingsState {
   showEdgeLabels: boolean;
   showPageMargins: boolean;
   showFaceFills: boolean;
+  showTextures2d: boolean;
+  viewMode2d: "all_sheets" | "single_page";
   zoom2d: number;
   pan2d: { x: number; y: number };
 
@@ -70,6 +72,8 @@ interface ViewerSettingsState {
   setShowEdgeLabels: (show: boolean) => void;
   setShowPageMargins: (show: boolean) => void;
   setShowFaceFills: (show: boolean) => void;
+  setShowTextures2d: (show: boolean) => void;
+  setViewMode2d: (mode: "all_sheets" | "single_page") => void;
   setZoom2d: (zoom: number | ((prev: number) => number)) => void;
   setPan2d: (pan: { x: number; y: number } | ((prev: { x: number; y: number }) => { x: number; y: number })) => void;
   reset2dView: () => void;
@@ -103,6 +107,8 @@ export const useViewerSettingsStore = create<ViewerSettingsState>((set) => ({
   showEdgeLabels: true,
   showPageMargins: true,
   showFaceFills: true,
+  showTextures2d: true,
+  viewMode2d: "all_sheets",
   zoom2d: 1.0,
   pan2d: { x: 0, y: 0 },
 
@@ -133,6 +139,8 @@ export const useViewerSettingsStore = create<ViewerSettingsState>((set) => ({
   setShowEdgeLabels: (showEdgeLabels) => set({ showEdgeLabels }),
   setShowPageMargins: (showPageMargins) => set({ showPageMargins }),
   setShowFaceFills: (showFaceFills) => set({ showFaceFills }),
+  setShowTextures2d: (showTextures2d) => set({ showTextures2d }),
+  setViewMode2d: (viewMode2d) => set({ viewMode2d }),
   setZoom2d: (zoomOrFn) =>
     set((s) => ({
       zoom2d: typeof zoomOrFn === "function" ? zoomOrFn(s.zoom2d) : zoomOrFn,

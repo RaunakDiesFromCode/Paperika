@@ -111,7 +111,7 @@ pub fn build_pages(
                     let page_x = (part_left + fv.x) - page_offset_x;
                     let page_y = (part_top + fv.y) - page_offset_y;
                     poly.push([page_x, page_y]);
-                    uvs.push([fv.u, 1.0 - fv.v]);
+                    uvs.push([fv.u, fv.v]);
                 }
 
                 part_faces.push(Face2d {
