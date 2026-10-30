@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#18181b" />
+      <stop offset="100%" stop-color="#09090b" />
+    </linearGradient>
+    <linearGradient id="facetA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0284c7" />
+    </linearGradient>
+    <linearGradient id="facetB" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#60a5fa" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+    <linearGradient id="facetC" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#4f46e5" />
+    </linearGradient>
+    <linearGradient id="facetD" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="100%" stop-color="#0369a1" />
+    </linearGradient>
+    <linearGradient id="facetE" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1d4ed8" />
+      <stop offset="100%" stop-color="#1e3a8a" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.5" />
+    </filter>
+  </defs>
+
+  <!-- App Rounded Rect for macOS -->
+  <rect x="32" y="32" width="448" height="448" rx="100" fill="url(#bgGrad)" stroke="#27272a" stroke-width="4" filter="url(#shadow)" />
+
+  <!-- Origami Polyhedron -->
+  <g transform="translate(256, 256) scale(1.15)">
+    <!-- Central upper facet -->
+    <polygon points="0,-120 -90,-40 0,20" fill="url(#facetA)" stroke="#e0f2fe" stroke-width="1.5" />
+    <polygon points="0,-120 90,-40 0,20" fill="url(#facetB)" stroke="#e0f2fe" stroke-width="1.5" />
+
+    <!-- Left wings -->
+    <polygon points="-90,-40 -130,50 -30,80" fill="url(#facetC)" stroke="#e0f2fe" stroke-width="1.5" />
+    <polygon points="-90,-40 -30,80 0,20" fill="url(#facetD)" stroke="#e0f2fe" stroke-width="1.5" />
+
+    <!-- Right wings -->
+    <polygon points="90,-40 130,50 30,80" fill="url(#facetC)" stroke="#e0f2fe" stroke-width="1.5" />
+    <polygon points="90,-40 30,80 0,20" fill="url(#facetE)" stroke="#e0f2fe" stroke-width="1.5" />
+
+    <!-- Bottom point -->
+    <polygon points="0,20 -30,80 0,130" fill="url(#facetB)" stroke="#e0f2fe" stroke-width="1.5" />
+    <polygon points="0,20 30,80 0,130" fill="url(#facetA)" stroke="#e0f2fe" stroke-width="1.5" />
+
+    <!-- Geometric paper fold tabs / dashed fold lines -->
+    <line x1="0" y1="-120" x2="0" y2="20" stroke="#f0fdf4" stroke-width="2" stroke-dasharray="6,4" />
+    <line x1="-90" y1="-40" x2="0" y2="20" stroke="#f0fdf4" stroke-width="2" stroke-dasharray="6,4" />
+    <line x1="90" y1="-40" x2="0" y2="20" stroke="#f0fdf4" stroke-width="2" stroke-dasharray="6,4" />
+    <line x1="0" y1="20" x2="0" y2="130" stroke="#f0fdf4" stroke-width="2" stroke-dasharray="6,4" />
+  </g>
+</svg>

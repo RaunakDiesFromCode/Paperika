@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Production build outputs
+dist/
+build/
+
+# Tauri & Rust build outputs
+src-tauri/target/
+
+# OS and Editor metadata
+.DS_Store
+*.pem
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and tests
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+coverage/
+*.log
