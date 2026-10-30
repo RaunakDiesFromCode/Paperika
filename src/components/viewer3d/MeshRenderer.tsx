@@ -188,10 +188,6 @@ export const MeshRenderer: React.FC<MeshRendererProps> = ({
             )
           : new THREE.Color("#d1d5db");
 
-        const isPartSelected =
-          selectedPartId !== null &&
-          mesh.part_ids.some((pid) => pid === selectedPartId);
-
         return (
           <mesh
             key={`mesh-${mesh.object_index}-${idx}`}
@@ -205,19 +201,13 @@ export const MeshRenderer: React.FC<MeshRendererProps> = ({
             {shadingMode === "wireframe" ? (
               <meshBasicMaterial
                 wireframe
-                color={isPartSelected ? "#38bdf8" : "#94a3b8"}
+                color="#94a3b8"
                 side={THREE.DoubleSide}
               />
             ) : (
               <meshStandardMaterial
                 map={texture || undefined}
-                color={
-                  isPartSelected
-                    ? new THREE.Color("#93c5fd")
-                    : texture
-                    ? "#ffffff"
-                    : baseColor
-                }
+                color={texture ? "#ffffff" : baseColor}
                 roughness={0.65}
                 metalness={0.1}
                 side={THREE.DoubleSide}
@@ -241,6 +231,14 @@ export const MeshRenderer: React.FC<MeshRendererProps> = ({
         </lineSegments>
       )}
 
+      {/* Selected Part Highlight (Highlights ONLY the triangles belonging to selectedPartId) */}
+      {selectedPartId !== null && (
+        <SelectedPartHighlight
+          geometry={geometry}
+          selectedPartId={selectedPartId}
+        />
+      )}
+
       {/* Selected Face Highlight */}
       {selectedFaceId !== null && (
         <SelectedFaceHighlight
@@ -249,6 +247,61 @@ export const MeshRenderer: React.FC<MeshRendererProps> = ({
         />
       )}
     </group>
+  );
+};
+
+// Subcomponent to highlight specifically selected part
+const SelectedPartHighlight: React.FC<{
+  geometry: Geometry3dDto;
+  selectedPartId: number;
+}> = ({ geometry, selectedPartId }) => {
+  const highlightGeom = useMemo(() => {
+    const positions: number[] = [];
+
+    geometry.meshes.forEach((mesh) => {
+      mesh.indices.forEach((idx, triIdx) => {
+        const faceIdx = Math.floor(triIdx / 3);
+        if (mesh.part_ids[faceIdx] === selectedPartId) {
+          const vIdx = idx * 3;
+          positions.push(
+            mesh.positions[vIdx],
+            mesh.positions[vIdx + 1],
+            mesh.positions[vIdx + 2]
+          );
+        }
+      });
+    });
+
+    if (positions.length === 0) return null;
+
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+    g.computeVertexNormals();
+    return g;
+  }, [geometry, selectedPartId]);
+
+  useEffect(() => {
+    return () => {
+      highlightGeom?.dispose();
+    };
+  }, [highlightGeom]);
+
+  if (!highlightGeom) return null;
+
+  return (
+    <mesh geometry={highlightGeom}>
+      <meshStandardMaterial
+        color="#38bdf8"
+        emissive="#0284c7"
+        emissiveIntensity={0.35}
+        transparent
+        opacity={0.55}
+        side={THREE.DoubleSide}
+        polygonOffset
+        polygonOffsetFactor={-1.5}
+        polygonOffsetUnits={-1.5}
+      />
+    </mesh>
   );
 };
 
@@ -292,12 +345,16 @@ const SelectedFaceHighlight: React.FC<{
 
   return (
     <mesh geometry={highlightGeom}>
-      <meshBasicMaterial
-        color="#38bdf8"
+      <meshStandardMaterial
+        color="#fbbf24"
+        emissive="#f59e0b"
+        emissiveIntensity={0.5}
         transparent
-        opacity={0.55}
+        opacity={0.8}
         side={THREE.DoubleSide}
-        depthTest={false}
+        polygonOffset
+        polygonOffsetFactor={-2.5}
+        polygonOffsetUnits={-2.5}
       />
     </mesh>
   );

@@ -356,21 +356,19 @@ impl<'a> Pdo3Parser<'a> {
                 name = format!("Material_{}", i + 1);
             }
 
-            // 16 floats (4x4): material, 3D, light, diffuse
-            let mut color_3d = [0f32; 4];
-            for c in &mut color_3d {
-                *c = self.reader.read_f32()?;
-            }
-            self.reader.skip(4 * 4)?; // 3D color
-            self.reader.skip(4 * 4)?; // light color
+            let mut f0 = [0f32; 4];
+            for c in &mut f0 { *c = self.reader.read_f32()?; }
+            let mut f1 = [0f32; 4];
+            for c in &mut f1 { *c = self.reader.read_f32()?; }
+            let mut f2 = [0f32; 4];
+            for c in &mut f2 { *c = self.reader.read_f32()?; }
+            let mut f3 = [0f32; 4];
+            for c in &mut f3 { *c = self.reader.read_f32()?; }
 
-            let mut diffuse = [0f32; 4];
-            for c in &mut diffuse {
-                *c = self.reader.read_f32()?;
-            }
+            self.reader.skip(16)?; // 2D color / specular info
 
-            // 2D material color ARGB (4 * 4B)
-            self.reader.skip(16)?;
+            let color_3d = f0;
+            let diffuse = f3;
 
             let has_texture = self.reader.read_u8()? == 1;
             let mut texture = None;

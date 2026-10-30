@@ -15,6 +15,7 @@ interface DocumentState {
   closeDocument: () => void;
   clearError: () => void;
   removeRecentFile: (path: string) => void;
+  updateMaterialColor: (materialId: number, colorRgba: [number, number, number, number]) => void;
 }
 
 const RECENT_FILES_KEY = "paperika_recent_files";
@@ -132,5 +133,25 @@ export const useDocumentStore = create<DocumentState>((set, get) => ({
     const updated = get().recentFiles.filter((f) => f !== path);
     saveRecentFiles(updated);
     set({ recentFiles: updated });
+  },
+
+  updateMaterialColor: (materialId: number, colorRgba: [number, number, number, number]) => {
+    const doc = get().currentDocument;
+    if (!doc) return;
+    const updatedMaterials = doc.materials.map((m) =>
+      m.id === materialId
+        ? {
+            ...m,
+            diffuse_rgba: colorRgba,
+            color_rgba: colorRgba,
+          }
+        : m
+    );
+    set({
+      currentDocument: {
+        ...doc,
+        materials: updatedMaterials,
+      },
+    });
   },
 }));
